@@ -36,7 +36,7 @@
 
     <!--    配置freemarker-->
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
-        <property name="templateLoaderPath" value="\WEB-INF\ftl"/>
+        <property name="templateLoaderPath" value="/WEB-INF/ftl"/>
         <property name="freemarkerSettings">
             <props>
                 <prop key="defaultEncoding">UTF-8</prop>
@@ -59,7 +59,8 @@
         <property name="initialSize" value="5"/>
         <property name="maxActive" value="20"/>
     </bean>
-    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+<!--  原生mybatis  <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">-->
+    <bean id="sessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
         <property name="mapperLocations" value="classpath:mappers/*.xml"/>
         <property name="configLocation" value="classpath:mybatis-config.xml"/>
@@ -67,4 +68,9 @@
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.imooc.reader.mapper"/>
     </bean>
+<!--    声明式事务管理-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 </beans>
